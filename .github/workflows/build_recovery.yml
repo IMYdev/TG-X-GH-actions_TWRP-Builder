@@ -151,7 +151,7 @@ jobs:
         lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
-    - name: Upload to Release
+    - name: Upload to GH Release
       uses: softprops/action-gh-release@v1
       with:
         files: | 
@@ -175,3 +175,10 @@ jobs:
         botToken: ${{ secrets.TELEGRAM_TOKEN }}
         jobStatus: ${{ job.status }}
         skipSuccess: true
+    - name: Release build on TG
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.CHANNEL_ID }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: ${{ github.repository }} on ${{ github.sha }} is built!
+        document: ${{ steps.<step id>.outputs.outfile }}

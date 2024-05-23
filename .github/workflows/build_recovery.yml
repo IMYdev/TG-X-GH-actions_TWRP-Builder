@@ -174,3 +174,10 @@ jobs:
         chatId: ${{ secrets.CHANNEL_ID }}
         botToken: ${{ secrets.TELEGRAM_TOKEN }}
         jobStatus: ${{ job.status }}
+    - name: Send recovery image to TG
+      uses: appleboy/telegram-action@v0.1.1
+      with:
+        to: ${{ secrets.CHANNEL_ID2 }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: New Recovery Build Released!
+        document: workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/${{ github.event.inputs.BUILD_TARGET }}.img
